@@ -17,6 +17,7 @@
     {ok, [atom()]} | {error, term()}.
 
 start() ->
+    erlang:display("statsderl started"),
     application:ensure_all_started(?APP).
 
 -spec stop() ->
@@ -30,6 +31,7 @@ stop() ->
     {ok, pid()}.
 
 start(_StartType, _StartArgs) ->
+    erlang:display("statsderl started"),
     statsderl_sup:start_link().
 
 -spec stop(term()) ->

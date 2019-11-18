@@ -30,3 +30,4 @@
 -type pool_size() :: pos_integer().
 -type sample_rate() :: number().
 -type value() :: number().
+-type tags() :: list().
