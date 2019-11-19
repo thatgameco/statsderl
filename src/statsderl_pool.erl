@@ -89,12 +89,12 @@ cast(Operation, ServerName) ->
 operation(Operation) ->
     operation(Operation, random_server()).
 
-operation({timing_now, Key, Value}, ServerName) ->
+operation({timing_now, Key, Value, Tags}, ServerName) ->
     Value2 = statsderl_utils:timing_now(Value),
-    cast({timing, Key, Value2}, ServerName);
-operation({timing_now_us, Key, Value}, ServerName) ->
+    cast({timing, Key, Value2, Tags}, ServerName);
+operation({timing_now_us, Key, Value, Tags}, ServerName) ->
     Value2 = statsderl_utils:timing_now_us(Value),
-    cast({timing, Key, Value2}, ServerName);
+    cast({timing, Key, Value2, Tags}, ServerName);
 operation(Operation, ServerName) ->
     cast(Operation, ServerName).
 
