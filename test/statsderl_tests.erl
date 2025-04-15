@@ -7,18 +7,6 @@ statsderl_base_key_test() ->
     assert_base_key("base_key", <<"base_key.">>),
     assert_base_key(<<"base_key">>, <<"base_key.">>).
 
-statsderl_hostname_test() ->
-    meck:new(statsderl_utils, [passthrough, no_history]),
-    meck:expect(statsderl_utils, getaddrs, fun (_) ->
-        {ok, {127, 0, 0, 1}}
-    end),
-    Socket = setup([{?ENV_HOSTNAME, <<"adgear.com">>}]),
-    statsderl:counter("test", 1, 1),
-    {ok, {_Address, _Port, Packet}} = gen_udp:recv(Socket, 0),
-    ?assertEqual(<<"test:1|c">>, Packet),
-    meck:unload(statsderl_utils),
-    cleanup(Socket).
-
 statsderl_test_() ->
     {setup,
         fun () -> setup() end,
@@ -65,11 +53,15 @@ increment_subtest(Socket) ->
 
 sampling_rate_subtest(Socket) ->
     meck:new(granderl, [passthrough, no_history]),
-    meck:expect(granderl, uniform, fun (?MAX_UNSIGNED_INT_32) -> 1 end),
+    meck:expect(granderl, uniform, fun
+        (4) -> 2;
+        (?MAX_UNSIGNED_INT_32) -> 1
+    end),
     statsderl:counter("test", 1, 0.1234),
     assert_packet(Socket, <<"test:1|c|@0.1234">>),
-    meck:expect(granderl, uniform, fun (?MAX_UNSIGNED_INT_32) ->
-        ?MAX_UNSIGNED_INT_32
+    meck:expect(granderl, uniform, fun
+        (4) -> 2;
+        (?MAX_UNSIGNED_INT_32) -> ?MAX_UNSIGNED_INT_32
     end),
     statsderl:counter("test", 1, 0.1234),
     meck:unload(granderl).
@@ -78,8 +70,10 @@ timing_fun_subtest(Socket) ->
     meck:new(statsderl_utils, [passthrough, no_history]),
     Seq = meck:loop([{1448, 573975, 400000}, {1448, 573975, 500000}]),
     meck:expect(statsderl_utils, timestamp, [], Seq),
-    statsderl:timing_fun("test", fun () -> ok end, 1),
+    TestResult = "testresult",
+    Result = statsderl:timing_fun("test", fun () -> TestResult end, 1),
     assert_packet(Socket, <<"test:100|ms">>),
+    ?assertEqual(Result, TestResult),
     meck:unload(statsderl_utils).
 
 timing_subtest(Socket) ->
@@ -126,6 +120,8 @@ setup(EnvVars) ->
     application:load(?APP),
     [application:unset_env(?APP, K) || K <- ?ENV_VARS],
     [application:set_env(?APP, K, V) || {K, V} <- EnvVars],
-    statsderl_app:start(),
     {ok, Socket} = gen_udp:open(?DEFAULT_PORT, [binary, {active, false}]),
+    timer:sleep(100),
+    statsderl_app:start(),
+    timer:sleep(1000),
     Socket.

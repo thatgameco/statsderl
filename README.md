@@ -2,8 +2,7 @@
 
 High Performance Erlang StatsD Client
 
-[![Build Status](https://travis-ci.org/lpgauth/statsderl.svg?branch=master)](https://travis-ci.org/lpgauth/statsderl)
-[![Coverage Status](https://coveralls.io/repos/github/lpgauth/statsderl/badge.svg?branch=master)](https://coveralls.io/github/lpgauth/statsderl?branch=master)
+![Build Status](https://github.com/lpgauth/shackle/workflows/Erlang%20CI/badge.svg)
 
 ### Requirements
 
@@ -17,7 +16,7 @@ High Performance Erlang StatsD Client
 ## API
 <a href="https://github.com/lpgauth/statsderl/blob/master/doc/statsderl.md#index" class="module">Function Index</a>
 
-#### Environment variables
+#### Environment variables:
 
 <table width="100%">
   <theader>
@@ -52,11 +51,11 @@ High Performance Erlang StatsD Client
   </tr>
 </table>
 
-#### base_key options
+#### base_key options:
 
 <table width="100%">
   <theader>
-    <th>Option</th>
+    <th>Name</th>
     <th>Source</th>
     <th>Description</th>
     <th>Example</th>
@@ -139,7 +138,7 @@ make test
 ```license
 The MIT License (MIT)
 
-Copyright (c) 2011-2016 Louis-Philippe Gauthier
+Copyright (c) 2011-2020 Louis-Philippe Gauthier
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

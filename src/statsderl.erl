@@ -35,49 +35,49 @@
 
 counter(Key, Value, Rate) -> counter(Key, Value, Rate, []).
 counter(Key, Value, Rate, Tags) ->
-    statsderl_pool:sample(Rate, {counter, Key, Value, Rate, Tags}).
+    statsderl_sample:rate(Rate, {counter, Key, Value, Rate, Tags}).
 
 -spec decrement(key(), value(), sample_rate(), tags()) ->
     ok.
 
 decrement(Key, Value, Rate) -> decrement(Key, Value, Rate, []).
 decrement(Key, Value, Rate, Tags) when Value >= 0 ->
-    statsderl_pool:sample(Rate, {counter, Key, -Value, Rate, Tags}).
+    statsderl_sample:rate(Rate, {counter, Key, -Value, Rate, Tags}).
 
 -spec gauge(key(), value(), sample_rate(), tags()) ->
     ok.
 
 gauge(Key, Value, Rate) -> gauge(Key, Value, Rate, []).
 gauge(Key, Value, Rate, Tags) when Value >= 0 ->
-    statsderl_pool:sample(Rate, {gauge, Key, Value, Tags}).
+    statsderl_sample:rate(Rate, {gauge, Key, Value, Tags}).
 
 -spec gauge_decrement(key(), value(), sample_rate(), tags()) ->
     ok.
 
 gauge_decrement(Key, Value, Rate) -> gauge_decrement(Key, Value, Rate, []).
 gauge_decrement(Key, Value, Rate, Tags) when Value >= 0 ->
-    statsderl_pool:sample(Rate, {gauge_decrement, Key, Value, Tags}).
+    statsderl_sample:rate(Rate, {gauge_decrement, Key, Value, Tags}).
 
 -spec gauge_increment(key(), value(), sample_rate(), tags()) ->
     ok.
 
 gauge_increment(Key, Value, Rate) -> gauge_increment(Key, Value, Rate, []).
 gauge_increment(Key, Value, Rate, Tags) when Value >= 0 ->
-    statsderl_pool:sample(Rate, {gauge_increment, Key, Value, Tags}).
+    statsderl_sample:rate(Rate, {gauge_increment, Key, Value, Tags}).
 
 -spec increment(key(), value(), sample_rate(), tags()) ->
     ok.
 
 increment(Key, Value, Rate) -> increment(Key, Value, Rate, []).
 increment(Key, Value, Rate, Tags) when Value >= 0 ->
-    statsderl_pool:sample(Rate, {counter, Key, Value, Rate, Tags}).
+    statsderl_sample:rate(Rate, {counter, Key, Value, Rate, Tags}).
 
 -spec timing(key(), value(), sample_rate(), tags()) ->
     ok.
 
 timing(Key, Value, Rate) -> timing(Key, Value, Rate, []).
 timing(Key, Value, Rate, Tags) ->
-    statsderl_pool:sample(Rate, {timing, Key, Value, Tags}).
+    statsderl_sample:rate(Rate, {timing, Key, Value, Tags}).
 
 -spec timing_fun(key(), fun(), sample_rate(), tags()) ->
     ok.
@@ -94,11 +94,11 @@ timing_fun(Key, Fun, Rate, Tags) ->
 
 timing_now(Key, Timestamp, Rate) -> timing_now(Key, Timestamp, Rate, []).
 timing_now(Key, Timestamp, Rate, Tags) ->
-    statsderl_pool:sample(Rate, {timing_now, Key, Timestamp, Tags}).
+    statsderl_sample:rate(Rate, {timing_now, Key, Timestamp, Tags}).
 
 -spec timing_now_us(key(), erlang:timestamp(), sample_rate(), tags()) ->
     ok.
 
 timing_now_us(Key, Timestamp, Rate) -> timing_now_us(Key, Timestamp, Rate, []).
 timing_now_us(Key, Timestamp, Rate, Tags) ->
-    statsderl_pool:sample(Rate, {timing_now_us, Key, Timestamp, Tags}).
+    statsderl_sample:rate(Rate, {timing_now_us, Key, Timestamp, Tags}).
