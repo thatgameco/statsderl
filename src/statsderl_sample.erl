@@ -38,11 +38,11 @@ cast(Request) ->
     shackle:cast(?APP, Request, undefined),
     ok.
 
-operation({timing_now, Key, Value}) ->
+operation({timing_now, Key, Value, Tags}) ->
     Value2 = statsderl_utils:timing_now(Value),
-    cast({timing, Key, Value2});
-operation({timing_now_us, Key, Value}) ->
+    cast({timing, Key, Value2, Tags});
+operation({timing_now_us, Key, Value, Tags}) ->
     Value2 = statsderl_utils:timing_now_us(Value),
-    cast({timing, Key, Value2});
+    cast({timing, Key, Value2, Tags});
 operation(Operation) ->
     cast(Operation).
